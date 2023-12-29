@@ -1,8 +1,11 @@
 package com.zhoot.api.gameaction.service;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
 
+import com.zhoot.api.gameaction.model.Answer;
 import com.zhoot.api.gameaction.model.Score;
 import com.zhoot.api.gameaction.model.composite.ScoreKey;
 import com.zhoot.api.gameaction.repo.ScoreRepo;
@@ -12,6 +15,28 @@ import jakarta.transaction.Transactional;
 public class ScoreService {
     @Autowired
     private ScoreRepo scoreRepo;
+
+    @Autowired
+    private AnswerService answerService;
+
+    @Autowired
+    private QDataService qDataService;
+
+    public int[] calculatePointReward(String gameid) {
+        Answer[] answers = answerService.retrieveAllAnswer(gameid);
+        Arrays.sort(answers);
+        int correct_answer = qDataService.retrieveQData(gameid).getCurrent_correct();
+        int max_time = qDataService.retrieveQData(gameid).getCurrent_time();
+        int[] scores = new int[answers.length];
+        for (int i = 0; i < answers.length; i++) {
+            if (answers[i].getAid() == correct_answer) {
+                scores[i] = 1000 * (max_time - answers[i].getTime()) / max_time;
+            } else {
+                scores[i] = 0;
+            }
+        }
+        return scores;
+    }
 
     @Transactional
     public int retrieveScore(String gameid, String playerid) {

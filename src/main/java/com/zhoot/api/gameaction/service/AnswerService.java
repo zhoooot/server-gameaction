@@ -12,6 +12,9 @@ public class AnswerService {
     @Autowired
     private RedisTemplate<String, Answer> redisTemplate; //list; opForList
 
+    @Autowired
+    private QDataService qDataService;
+
     public Answer[] retrieveAllAnswer(String gameid) {
         List<Answer> answers = redisTemplate.opsForList().range(gameid, 0, -1);
         if (answers == null) {
@@ -27,5 +30,15 @@ public class AnswerService {
     public void removeAnswer(String gameid, Answer answer) {
         // delete if answer is in list
         redisTemplate.opsForList().remove(gameid, 1, answer);
+    }
+
+    public int[] categorizeAnswer(String gameid, Answer answer) {
+        int correct_answer = qDataService.retrieveQData(gameid).getCurrent_correct();
+        Answer[] answers = retrieveAllAnswer(gameid);
+        int[] count = new int[4];
+        for (int i = 0; i < answers.length; i++) {
+            count[answers[i].getAid()]++;
+        }
+        return count;
     }
 }

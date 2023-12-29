@@ -50,6 +50,14 @@ public class Answer implements java.io.Serializable {
         this.time = time;
     }
 
+    public boolean greaterThan(Answer answer) {
+        return this.time > answer.time;
+    }
+
+    public boolean lessThan(Answer answer) {
+        return this.time < answer.time;
+    }
+
     @Override
     public String toString() {
         return "Answer{" +

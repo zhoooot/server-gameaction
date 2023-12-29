@@ -59,7 +59,7 @@ public class Score implements java.io.Serializable {
         this.score = score;
     }
 
-    public List<Score> createScores(String gameid2, String[] playerids, int[] scores) {
+    public static List<Score> createScores(String gameid2, String[] playerids, int[] scores) {
         List<Score> scoreList = new ArrayList<Score>();
         for (int i = 0; i < playerids.length; i++) {
             scoreList.add(new Score(gameid2, playerids[i], scores[i]));

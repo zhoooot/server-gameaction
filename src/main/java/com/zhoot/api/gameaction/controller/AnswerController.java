@@ -31,6 +31,11 @@ public class AnswerController {
         return qDataService.retrieveQData(gameid);
     }
 
+    @GetMapping("/category/{gameid}")
+    int[] categorizeAnswer(@PathVariable String gameid, @RequestBody Answer answer) {
+        return answerService.categorizeAnswer(gameid, answer);
+    }
+
     @PostMapping("/data/{gameid}")
     QData addQData(@PathVariable String gameid, @RequestBody QData qdata) {
         return qDataService.addQData(gameid, qdata);
