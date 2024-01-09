@@ -30,7 +30,7 @@ public class ScoreService {
         int[] scores = new int[answers.length];
         for (int i = 0; i < answers.length; i++) {
             if (answers[i].getAid() == correct_answer) {
-                scores[i] = 1000 * (max_time - answers[i].getTime()) / max_time;
+                scores[i] = (int)(1000 * (max_time - answers[i].getTime()) / max_time);
             } else {
                 scores[i] = 0;
             }
